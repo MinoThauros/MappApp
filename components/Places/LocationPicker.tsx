@@ -3,7 +3,8 @@ import React from 'react'
 import OutlinedButton from '../UI/OutlinedButton'
 import { Colors } from '../../constants/colors'
 import {getCurrentPositionAsync, useForegroundPermissions, PermissionStatus} from 'expo-location'
-import verifyPermissions from '../../utils/DeviceNative/PermissionsManager'
+import verifyPermissions from '../../utils/DeviceNative/PermissionsManager';
+import { GOOGLE_MAPS_API_KEY } from 'react-native-dotenv';
 
 /**
  * Background on LocationPicker:when app isnt currently being viewed
@@ -41,7 +42,7 @@ const LocationPicker = () => {
       <View style={styles.mapPreview}></View>
       <View style={styles.actions}>
         <OutlinedButton  onPress={getLocationHandler} icon="location">Locate user</OutlinedButton>
-        <OutlinedButton  onPress={()=>{}} icon="map">Pick on Map</OutlinedButton>
+        <OutlinedButton  onPress={()=>{console.log(GOOGLE_MAPS_API_KEY)}} icon="map">Pick on Map</OutlinedButton>
       </View>
     </View>
   )

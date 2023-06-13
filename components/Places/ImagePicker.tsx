@@ -3,27 +3,26 @@ import React, { useState } from 'react';
 import {launchCameraAsync, useCameraPermissions,PermissionStatus, ImagePickerResult} from 'expo-image-picker';
 import { Colors } from '../../constants/colors';
 import OutlinedButton from '../UI/OutlinedButton';
+import verifyPermissions from '../../utils/DeviceNative/PermissionsManager';
+import { GOOGLE_MAPS_API_KEY } from '@env';
 
 const ImagePicker = () => {
     const [cameraPermisisonInfo,requestPermission]=useCameraPermissions();
     const [image,setImage]=useState<ImagePickerResult|undefined>()
 
-    const verifyPermissions=async ()=>{
+    const checkPermissions=async ()=>{
         console.log('Permission',cameraPermisisonInfo?.status)
-        if(cameraPermisisonInfo && cameraPermisisonInfo.status===PermissionStatus.UNDETERMINED){
-            const permissionResp=await requestPermission();
-            return permissionResp.granted;
-        }
-        if(cameraPermisisonInfo && cameraPermisisonInfo.status===PermissionStatus.DENIED){
-            
-            Alert.alert('Permission Denied','You need to grant camera permissions to use this app',[{text:'Okay'}])
-            return false
-        }
-        return true//we do have access to camera
+        return await verifyPermissions({
+            permissionState:{
+                permission:cameraPermisisonInfo,
+                requestPermission
+            },
+            PermissionStatus
+        })
     }
 
     const pickImage = async () => {
-        const hasPermission=await verifyPermissions()
+        const hasPermission=await checkPermissions()
         if(!hasPermission){
             return
         }
