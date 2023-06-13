@@ -32,6 +32,12 @@
         {
           "cameraPermission": "The app needs access to your camera to take photos of your factorite places"
         }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location."
+        }
       ]
     ]
   }

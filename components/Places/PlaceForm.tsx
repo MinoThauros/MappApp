@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { Colors } from '../../constants/colors'
 import CustomTextInput from '../UI/CustomTextInput'
 import ImagePicker from './ImagePicker'
+import LocationPicker from './LocationPicker'
 
 const PlaceForm = () => {
   const [title, setTitle] = useState('')
@@ -13,6 +14,7 @@ const PlaceForm = () => {
         <CustomTextInput title='Title' nextValue={setTitle}/>
       </View>
       <ImagePicker />
+      <LocationPicker />
     </ScrollView>
     
   )
