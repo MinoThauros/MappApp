@@ -4,7 +4,6 @@ import {launchCameraAsync, useCameraPermissions,PermissionStatus, ImagePickerRes
 import { Colors } from '../../constants/colors';
 import OutlinedButton from '../UI/OutlinedButton';
 import verifyPermissions from '../../utils/DeviceNative/PermissionsManager';
-import { GOOGLE_MAPS_API_KEY } from '@env';
 
 const ImagePicker = () => {
     const [cameraPermisisonInfo,requestPermission]=useCameraPermissions();
