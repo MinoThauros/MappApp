@@ -5,7 +5,11 @@ import { Colors } from '../../constants/colors';
 import OutlinedButton from '../UI/OutlinedButton';
 import verifyPermissions from '../../utils/DeviceNative/PermissionsManager';
 
-const ImagePicker = () => {
+type ImagePickerProps={
+    onImagePicked:(imageUri:string)=>void
+}
+
+const ImagePicker = ({onImagePicked}:ImagePickerProps) => {
     const [cameraPermisisonInfo,requestPermission]=useCameraPermissions();
     const [image,setImage]=useState<ImagePickerResult|undefined>()
 
@@ -32,7 +36,10 @@ const ImagePicker = () => {
             quality:0.5,
             
         })
-        setImage(image)
+        if (image) {
+            setImage(image);
+            onImagePicked(image.assets ? image.assets[0].uri : '');
+        }
     }
 
     let imagePreview=<Text>No image picked yet.</Text>

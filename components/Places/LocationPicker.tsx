@@ -1,22 +1,47 @@
-import { StyleSheet, Text, View, Image } from 'react-native'
-import React, { useState } from 'react'
+import { StyleSheet, Text, View, Image, Alert } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import OutlinedButton from '../UI/OutlinedButton'
 import { Colors } from '../../constants/colors'
 import {getCurrentPositionAsync, useForegroundPermissions, PermissionStatus} from 'expo-location'
 import verifyPermissions from '../../utils/DeviceNative/PermissionsManager';
 import { Location } from '../../models/places'
-import getMapPreview from '../../utils/DeviceNative/maps'
-import { useNavigation } from '@react-navigation/native'
+import getMapPreview from '../../utils/maps'
+import { useIsFocused, useNavigation, useRoute } from '@react-navigation/native'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+
+type LocationPickerProps={
+    onLocationPicked:(location:{lat:number,lng:number})=>void
+}
 
 /**
  * Background on LocationPicker:when app isnt currently being viewed
  * Foreground on LocationPicker:when app is currently being viewed
  * @returns 
  */
-const LocationPicker = () => {
+const LocationPicker = ({onLocationPicked}:LocationPickerProps) => {
     const [pickedLocation,setPickedLocation]=useState<Location>()
     const [locationPermissionInfo,requestPermission]=useForegroundPermissions()
-    const navigation=useNavigation()
+    const navigation=useNavigation<NativeStackNavigationProp<any>>()
+    const route=useRoute() as any
+    const isFocused=useIsFocused()
+
+    useEffect(()=>{
+        const {lat,lng}:Location=route.params? route.params.pickedLocation:{lat:null,lng:null};
+        if(isFocused && lat && lng){
+            setPickedLocation({
+                lat,
+                lng
+            })
+        }
+    },[isFocused])
+
+    useEffect(()=>{
+        if(pickedLocation){
+            onLocationPicked(pickedLocation)
+        }
+    },[pickedLocation,onLocationPicked])
+    //chance of infinite loop-useEffect calls a function from the dependency array
+
     const checkPermissions=async ()=>{
         return await verifyPermissions(
         {
@@ -49,7 +74,7 @@ const LocationPicker = () => {
     }
 
     const pickOnMapHandler=()=>{
-        navigation.navigate('Map' as never)
+        navigation.navigate('Map')
 
     }
   return (
