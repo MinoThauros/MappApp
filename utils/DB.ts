@@ -65,7 +65,7 @@ export const fetchAllPlaces=()=>{
                 'SELECT * FROM places',
                 [],
                 (_,result)=>{
-                    resolve(result);
+                    resolve(result.rows._array as Place[]);
                     //return true;
                 },
                 (_,err)=>{
@@ -76,4 +76,23 @@ export const fetchAllPlaces=()=>{
         })
     })
 
+}
+
+export const fetchPlaceById=({id}:{id:string})=>{
+    return new Promise((resolve,reject)=>{
+        db.transaction((tx)=>{
+            tx.executeSql(
+                'SELECT * FROM places WHERE id=?',//? is a placeholder which is replaced by the second argument in the array
+                [id],
+                (_,result)=>{
+                    resolve(result.rows._array[0] as Place);
+                    //return true;
+                },
+                (_,err)=>{
+                    reject(err);
+                    return false;
+                }
+            )
+        })
+    })
 }

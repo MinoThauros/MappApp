@@ -27,7 +27,6 @@ const verifyPermissions=async ({
     permissionState: { permission, requestPermission },
     PermissionStatus,
   }: VerifyPermissionsProps)=>{
-    console.log('Permission',permission?.status)
     if(permission && permission.status===PermissionStatus.UNDETERMINED){
         const permissionResp=await requestPermission();
         return permissionResp.granted;

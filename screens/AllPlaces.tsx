@@ -12,7 +12,7 @@ const AllPlaces = () => {
   const [places,setPlaces]=useState<Place[]>([])
   const {params}=useRoute() as any
   const isFocused=useIsFocused()
-  const {data}=useGetAllPlaces()
+  const locations=useGetAllPlaces().data as Place[]
 
   useEffect(()=>{
     if(params && params.place && isFocused){
@@ -23,13 +23,13 @@ const AllPlaces = () => {
 
   const showPlaces=async()=>{
     const placeZ=await fetchAllPlaces()
-    console.log(prettyFormat(data as any))
+    console.log(prettyFormat(locations as any))
 
   }
 
   return (
     <>
-      <PlacesList places={places}/>
+      <PlacesList places={locations}/>
       <Button  title='click' onPress={showPlaces}>Get Data</Button>
     </>
     

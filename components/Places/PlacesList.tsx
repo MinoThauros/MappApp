@@ -10,7 +10,7 @@ type PlacesListProps={
 const PlacesList = ({places}:PlacesListProps) => {
     //handle failed API requests using react query
 
-    if(!places.length){
+    if(!places || !places.length){
         return (
             <View style={styles.fallBackContainer}>
                 <Text style={styles.fallBackText}>No places added yet - start adding some</Text>
