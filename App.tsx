@@ -8,12 +8,30 @@ import HeaderButton from './components/UI/HeaderAddButton';
 import { Colors } from './constants/colors';
 import Map from './screens/Map';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
+import { init } from './utils/DB';
+import  AppLoading  from 'expo-app-loading';
 
 const Stack = createNativeStackNavigator();
 
 const queryClient = new QueryClient();
 
 export default function App() {
+  const [isReady,setIsReady]=useState(false)
+
+
+  useEffect(()=>{
+    init()
+      .then(()=>{
+      console.log('initialized db');
+      setIsReady(true)
+    })
+      .catch(err=>console.log(err))
+  },[])
+
+  if(!isReady){
+    return <AppLoading/>
+  }
   return (
     <QueryClientProvider client={queryClient}>
     <StatusBar style="auto" />
