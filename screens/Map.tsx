@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import {IconButton} from '@react-native-material/core';
 import { Ionicons } from '@expo/vector-icons';
+import { useRoute } from '@react-navigation/native';
 
 const Map = () => {
     const {navigate,setOptions}=useNavigation<NativeStackNavigationProp<any>>()

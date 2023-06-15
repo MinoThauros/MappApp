@@ -2,10 +2,19 @@ import { Image, Pressable, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { PlaceProp } from '../models/places'
 import { Colors } from '../constants/colors'
+import { useNavigation } from '@react-navigation/native'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 
-const PlaceItem = ({place,onSelect}:{place:PlaceProp,onSelect?:()=>void}) => {
+const PlaceItem = ({place}:{place:PlaceProp}) => {
+  //receives a single place object
+  const {navigate}=useNavigation<NativeStackNavigationProp<any>>()
+
+  const onItemSelect=()=>{
+    navigate('PlaceDetails',{id:place.id})
+  }
+
   return (
-    <Pressable onPress={onSelect} style={({pressed})=>[styles.item, pressed && styles.pressed]}>
+    <Pressable onPress={onItemSelect} style={({pressed})=>[styles.item, pressed && styles.pressed]}>
 
     { place.imageUri.length ? <Image style={styles.image} source={{uri:place.imageUri}}/> : null}
       <View style={styles.info}>

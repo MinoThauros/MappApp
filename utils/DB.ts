@@ -78,7 +78,7 @@ export const fetchAllPlaces=()=>{
 
 }
 
-export const fetchPlaceById=({id}:{id:string})=>{
+export const fetchPlaceById=({id}:{id:string}):Promise<Place | any>=>{
     return new Promise((resolve,reject)=>{
         db.transaction((tx)=>{
             tx.executeSql(

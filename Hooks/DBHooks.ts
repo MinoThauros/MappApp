@@ -1,5 +1,5 @@
 //task: use useMutation to update the database
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { UseQueryResult, useMutation, useQuery } from "@tanstack/react-query";
 import { Location, Place } from "../models/places";
 import { fetchAllPlaces, fetchPlaceById, insertPlace } from "../utils/DB";
 
@@ -16,10 +16,10 @@ export const useGetAllPlaces=()=>{
     return useQuery(['places'],fetchAllPlaces)
 }
 
-export const useGetPlaceById=({id}:{id:string})=>{
+export const useGetPlaceById=({id}:{id:string}):UseQueryResult<Place, any>=>{
     return useQuery({
         queryKey:['place',id],
         queryFn:async()=>await fetchPlaceById({id}),
-        enabled:false
+        select:place=>place as Place
     })
 }

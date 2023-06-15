@@ -11,6 +11,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { init } from './utils/DB';
 import  AppLoading  from 'expo-app-loading';
+import PlaceDetails from './screens/PlaceDetails';
 
 const Stack = createNativeStackNavigator();
 
@@ -72,6 +73,13 @@ export default function App() {
           component={Map} 
           options={{
             title:'Map',
+          }}/>
+        
+        <Stack.Screen
+          name="PlaceDetails"
+          component={PlaceDetails}
+          options={{
+            title:'Place Details',
           }}/>
       </Stack.Navigator>
     </NavigationContainer>
