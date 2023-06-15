@@ -3,6 +3,8 @@ export type Location={
     lng:number
 }
 
+type ExtendedLocation=Location & {address:string}
+
 export type PlaceProp={
     title:string,
     imageUri:string,
@@ -16,19 +18,19 @@ export class Place implements PlaceProp{
     imageUri:string;
     address:string;
     location:Location;
-    id:string
+    readonly id:string
     
 
     constructor(
         title:string,
         imageUri:string,
-        address:string,
-        location:Location,
+        location:ExtendedLocation,
     ){
         this.title=title;
         this.imageUri=imageUri;
-        this.address=address;
-        this.location=location;
+        this.address=location.address;
+        this.location={lat:location.lat,lng:location.lng};
+        this.address=location.address;
         this.id= new Date().toString()+Math.random().toString()
 
     }

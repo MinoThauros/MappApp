@@ -5,12 +5,12 @@ import PlaceItem from '../PlaceItem';
 import { Colors } from '../../constants/colors';
 
 type PlacesListProps={
-    places:PlaceProp[]
+    places:Place[]
 }
 const PlacesList = ({places}:PlacesListProps) => {
     //handle failed API requests using react query
 
-    if(!places){
+    if(!places.length){
         return (
             <View style={styles.fallBackContainer}>
                 <Text style={styles.fallBackText}>No places added yet - start adding some</Text>

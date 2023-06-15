@@ -5,20 +5,30 @@ import CustomTextInput from '../UI/CustomTextInput'
 import ImagePicker from './ImagePicker'
 import LocationPicker from './LocationPicker'
 import Button from '../UI/Button'
-import { Location } from '../../models/places'
+import { Location, Place } from '../../models/places'
 
 type FullAddress=Location&{address:string}
+export type primitivePlace={
+  title:string,
+  image:string,
+  location:FullAddress
+}
 
-const PlaceForm = () => {
+const PlaceForm = ({handlePlaceObj}:{handlePlaceObj:(place:Place)=>void}) => {
   const [title, setTitle] = useState('')
   const [image, setImage] = useState('')
   const [location, setLocation] = useState<FullAddress>()
   const savePlace=()=>{
-    console.log(title)
-    console.log(image)
-    console.log(location)
-
-  }
+    if(location){
+      const address:FullAddress={
+          lat:location.lat,
+          lng:location.lng,
+          address:location.address
+        }
+      const fullLocation=new Place(title,image,address)
+      handlePlaceObj(fullLocation)
+      }
+    }
 
   const locationPickedHandler= useCallback((location:{lat:number,lng:number},address: string)=>{
     setLocation({...location,address})

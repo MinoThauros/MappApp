@@ -29,7 +29,6 @@ const ImagePicker = ({onImagePicked}:ImagePickerProps) => {
         if(!hasPermission){
             return
         }
-        console.log('we got permission')
         const image=await launchCameraAsync({
             allowsEditing:true,
             aspect:[16,9],
