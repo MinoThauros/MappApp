@@ -7,10 +7,12 @@ import LocationPicker from './LocationPicker'
 import Button from '../UI/Button'
 import { Location } from '../../models/places'
 
+type FullAddress=Location&{address:string}
+
 const PlaceForm = () => {
   const [title, setTitle] = useState('')
   const [image, setImage] = useState('')
-  const [location, setLocation] = useState<Location>()
+  const [location, setLocation] = useState<FullAddress>()
   const savePlace=()=>{
     console.log(title)
     console.log(image)
@@ -18,8 +20,8 @@ const PlaceForm = () => {
 
   }
 
-  const locationPickedHandler= useCallback((location:{lat:number,lng:number})=>{
-    setLocation(location)
+  const locationPickedHandler= useCallback((location:{lat:number,lng:number},address: string)=>{
+    setLocation({...location,address})
 
   },[])
 

@@ -1,5 +1,5 @@
 import { GOOGLE_MAPS_API_KEY } from "react-native-dotenv";
-import { Location } from "../models/places";
+import { Location } from "../../models/places";
 
 export type AddressError = {
     status: string;
@@ -16,7 +16,7 @@ const getMapPreview= ({lat,lng}:Location)=>{
 export default getMapPreview;
 
 //Docs https://developers.google.com/maps/documentation/geocoding/requests-geocoding#ErrorMessages
-const getAddress= async ({lat,lng}:Location):Promise<string | AddressError>=>{
+export const getAddress= async ({lat,lng}:Location):Promise<string | AddressError>=>{
     let address:any
     const resp= await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${GOOGLE_MAPS_API_KEY}`)
     const data= await resp.json() as any;

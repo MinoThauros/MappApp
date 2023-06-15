@@ -5,12 +5,13 @@ import { Colors } from '../../constants/colors'
 import {getCurrentPositionAsync, useForegroundPermissions, PermissionStatus} from 'expo-location'
 import verifyPermissions from '../../utils/DeviceNative/PermissionsManager';
 import { Location } from '../../models/places'
-import getMapPreview from '../../utils/maps'
+import getMapPreview from '../../utils/GoogleMaps/maps'
 import { useIsFocused, useNavigation, useRoute } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { useGetAddress } from '../../Hooks/Maps'
 
 type LocationPickerProps={
-    onLocationPicked:(location:{lat:number,lng:number})=>void
+    onLocationPicked:(location:{lat:number,lng:number},address:string)=>void
 }
 
 /**
@@ -18,7 +19,7 @@ type LocationPickerProps={
  * Foreground on LocationPicker:when app is currently being viewed
  * @returns 
  */
-const LocationPicker = ({onLocationPicked}:LocationPickerProps) => {
+const LocationPicker = ({onLocationPicked}:LocationPickerProps,address:string) => {
     const [pickedLocation,setPickedLocation]=useState<Location>()
     const [locationPermissionInfo,requestPermission]=useForegroundPermissions()
     const navigation=useNavigation<NativeStackNavigationProp<any>>()
@@ -32,12 +33,26 @@ const LocationPicker = ({onLocationPicked}:LocationPickerProps) => {
                 lat,
                 lng
             })
+
         }
     },[isFocused])
 
+    const onSuccessHandler=(address:string)=>{
+        Alert.alert('Address fetched',address,[{text:'OK'}])
+        if(pickedLocation){
+             onLocationPicked(pickedLocation,address)
+        }
+       
+
+    }
+
+
+    
+    const {refetch,data}=useGetAddress({lat:pickedLocation?.lat,lng:pickedLocation?.lng},onSuccessHandler)
+
     useEffect(()=>{
         if(pickedLocation){
-            onLocationPicked(pickedLocation)
+            refetch()
         }
     },[pickedLocation,onLocationPicked])
     //chance of infinite loop-useEffect calls a function from the dependency array

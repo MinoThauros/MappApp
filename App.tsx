@@ -7,12 +7,15 @@ import AddPlace from './screens/AddPlace';
 import HeaderButton from './components/UI/HeaderAddButton';
 import { Colors } from './constants/colors';
 import Map from './screens/Map';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const Stack = createNativeStackNavigator();
 
+const queryClient = new QueryClient();
+
 export default function App() {
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
     <StatusBar style="auto" />
     <NavigationContainer>
       <Stack.Navigator screenOptions={{
@@ -55,7 +58,7 @@ export default function App() {
       </Stack.Navigator>
     </NavigationContainer>
     
-    </>
+    </QueryClientProvider>
   );
 }
 
