@@ -8,6 +8,7 @@ import {format as prettyFormat} from 'pretty-format';
 import { Place } from '../models/places'
 import { useNavigation } from '@react-navigation/native'
 import { IconButton } from '@react-native-material/core'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 
 const PlaceDetails = () => {
   //we will navigate to this screen but
@@ -15,21 +16,20 @@ const PlaceDetails = () => {
   const {params:{id}}=useRoute() as any;//gotta do better
   const {data,isLoading,isError}=useGetPlaceById({id})
   const Data=data as Place
-  const {setOptions}=useNavigation()
+  const {navigate}=useNavigation<NativeStackNavigationProp<any>>()
 
   const showOnMap=()=>{
     const Data=data as any
     console.log('show on map',prettyFormat(Data));
+
+    navigate('Map',{
+      lng:Data.lng,
+      lat:Data.lat,
+    })
+ 
+    
   }
 
-  useLayoutEffect(()=>{
-    setOptions({
-      headerRight:()=>{
-        <IconButton icon="star" onPress={showOnMap}/>
-      }
-      
-    })
-  },[])
 
   if(isLoading){
     return <Text>Loading...</Text>

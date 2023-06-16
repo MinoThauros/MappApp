@@ -10,16 +10,24 @@ import { useRoute } from '@react-navigation/native';
 
 const Map = () => {
     const {navigate,setOptions}=useNavigation<NativeStackNavigationProp<any>>()
-    const [selectedLocation,setSelectedLocation]=useState<Location>()
+    
+    const params=useRoute().params as any
     const initialRegion={
-        latitude:37.78,
-        longitude:-122.43,
+        latitude:params&&params.lat? params.lat:37.78,
+        longitude: params&&params.lng? params.lng:-122.43,
         latitudeDelta:0.0922,
         longitudeDelta:0.0421
     }
+    const [selectedLocation,setSelectedLocation]=useState<Location>({
+        lat:initialRegion.latitude,
+        lng:initialRegion.longitude
+    })
     const selectLocationHandler=(event:any)=>{
         const lat:number=event.nativeEvent.coordinate.latitude
         const lng:number=event.nativeEvent.coordinate.longitude
+        if(params?.lng || params?.lat){
+            return
+        }
         setSelectedLocation({
             lat,
             lng
@@ -37,6 +45,9 @@ const Map = () => {
     //function will only be recreated if navigate or selectedLocation changes
 
     useLayoutEffect(()=>{
+        if(params?.lng || params?.lat){
+            return
+        }
         setOptions({
             headerRight:({tintColor})=>(
                 <IconButton 
@@ -46,7 +57,7 @@ const Map = () => {
                     color={tintColor} 
                     onPress={savePickedLocationHandler}/>),
         })
-    },[savePickedLocationHandler])
+    },[savePickedLocationHandler,initialRegion])
     //chance of infinite loop if savePickedLocationHandler is not a callback
     //function savePickedLocationHandler will only be recreated if navigate,
     //,selectedLocation or setOptions changes
